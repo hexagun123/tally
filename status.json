@@ -1,0 +1,67 @@
+{
+    "extra_curriculars": {
+        "Usaco": {
+            "Streak": 0,
+            "Updated": false
+        },
+        "exercising": {
+            "Streak": 0,
+            "Updated": false
+        },
+        "game design": {
+            "Streak": 0,
+            "Updated": false
+        },
+        "learn to study": {
+            "Streak": 0,
+            "Updated": false
+        },
+        "meditation": {
+            "Streak": 0,
+            "Updated": false
+        },
+        "nofap": {
+            "Streak": 0,
+            "Updated": false
+        },
+        "reading": {
+            "Streak": 0,
+            "Updated": false
+        }
+    },
+    "last_opened": "2025-2-13",
+    "subjects": {
+        "EE": {
+            "current": "?",
+            "expected": "3"
+        },
+        "English": {
+            "current": "5",
+            "expected": "6"
+        },
+        "Italian": {
+            "current": "5",
+            "expected": "7"
+        },
+        "Math": {
+            "current": "7",
+            "expected": "7"
+        },
+        "Psychology": {
+            "current": "7",
+            "expected": "7"
+        },
+        "TOK": {
+            "current": "1",
+            "expected": "3"
+        },
+        "computer science": {
+            "current": "6",
+            "expected": "7"
+        },
+        "math": {
+            "current": "7",
+            "expected": "7"
+        }
+    }
+}
