@@ -1,7 +1,11 @@
 {
     "extra_curriculars": {
-        "Usaco": {
+        "Stretching": {
             "Streak": 0,
+            "Updated": false
+        },
+        "Usaco": {
+            "Streak": 5,
             "Updated": false
         },
         "exercising": {
@@ -9,6 +13,10 @@
             "Updated": false
         },
         "game design": {
+            "Streak": 0,
+            "Updated": false
+        },
+        "guitar": {
             "Streak": 0,
             "Updated": false
         },
@@ -21,15 +29,19 @@
             "Updated": false
         },
         "nofap": {
-            "Streak": 0,
-            "Updated": false
+            "Streak": 4,
+            "Updated": true
         },
         "reading": {
-            "Streak": 0,
+            "Streak": 4,
+            "Updated": false
+        },
+        "shower": {
+            "Streak": 1,
             "Updated": false
         }
     },
-    "last_opened": "2025-2-13",
+    "last_opened": "2025-2-20",
     "subjects": {
         "EE": {
             "current": "?",

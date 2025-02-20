@@ -102,7 +102,8 @@ void userinput(json &j) {
                 }
                 cout << "Enter the activity you want to update: (press n to force quit)";
                 string activity;
-                cin >> activity;
+                cin.ignore();
+                getline(cin, activity);
                 if (j["extra_curriculars"].contains(activity)) {
                     if (!j["extra_curriculars"][activity]["Updated"]) {
                         j["extra_curriculars"][activity]["Updated"] = true;
