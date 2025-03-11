@@ -40,11 +40,14 @@ class Screen:
         self.root = tk.Tk()
         self.root.title("Status Screen")
         self.root.geometry("1024x768")
-
-        # Load tasks from JSON file
-        with open('pstatus.json', 'r') as file:
-            data = json.load(file)
-            self.tasks = [Task(task['name'], task['streak'], task['updated'], task['last_updated']) for task in data]
+        try:
+            # Load tasks from JSON file
+            with open('pstatus.json', 'r') as file:
+                data = json.load(file)
+                self.tasks = [Task(task['name'], task['streak'], task['updated'], task['last_updated']) for task in data]
+        except FileNotFoundError:
+            with open('pstatus.json', 'w') as file:
+                json.dump({}, file, indent=4)
 
         self.page = Page(self.tasks)
         self.menu = Menu(self.root, self.page)
