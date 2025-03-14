@@ -15,3 +15,6 @@ The next step is to add GUIs and checkboxes
 Basic GUI is done in the python verison: will continue with python for now as it somehow became a nightmare to try and install
 Gui system for C++ on my laptop.
 
+**UPATED** on 14/3/2025
+
+A more orginised structure with multiple files, plan to add comments, and a random wheel generator for the python version
