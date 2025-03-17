@@ -17,7 +17,7 @@ Gui system for C++ on my laptop.
 
 _**UPDATED** on 14/3/2025_
 
-A more orginised structure with multiple files, plan to add comments, and a random wheel generator for the python version
+A more orginised structure with multiple files and a random wheel generator for the python version, plan to add comments for better readablility
 
 _**UPDATED** on 17/3/2025_
 
