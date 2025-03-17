@@ -68,8 +68,3 @@ class RandomiserApp:
         self.spin_button.pack(pady=10)
         self.spin_button.place(relx=0.5, rely=0.75, anchor=tk.CENTER)
 
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = RandomiserApp(root,["Task 1", "Task 2", "Task 3", "Task 4", "Task 5"])
-    root.mainloop()

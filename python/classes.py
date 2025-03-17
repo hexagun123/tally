@@ -1,18 +1,20 @@
 import tkinter as tk
 import json
 import randomTask
+import stats
 from datetime import datetime
 
 # Task class to represent each task with its attributes
 class Task:
-    def __init__(self, name, streak, updated, last_updated):
+    def __init__(self, name, streak, updated, last_updated, attributes=None):
         self.name = name
         self.streak = streak
         self.updated = updated
         self.last_updated = last_updated
+        self.attributes = attributes
 
     def __str__(self):
-        return f"Task(name={self.name}, streak={self.streak}, updated={self.updated}, last_updated={self.last_updated})"
+        return f"Task(name={self.name}, streak={self.streak}, updated={self.updated}, last_updated={self.last_updated}, attributes={self.attributes})"
 
 # Page class to handle the display of tasks
 class Page:
@@ -50,7 +52,7 @@ class Screen:
         try:
             with open('pstatus.json', 'r') as file:
                 data = json.load(file)
-                return [Task(task['name'], task['streak'], task['updated'], task['last_updated']) for task in data]
+                return [Task(task['name'], task['streak'], task['updated'], task['last_updated'], task["attributes"]) for task in data]
         except FileNotFoundError:
             with open('pstatus.json', 'w') as file:
                 json.dump([], file, indent=4)
@@ -78,8 +80,14 @@ class Menu:
         self.button1 = tk.Button(self.root, text="Random Task", command=self.random_task)
         self.button1.place(relx=0.35, rely=0.3, relwidth=0.3)
 
+        self.button2 = tk.Button(self.root, text="Stats screen", command=self.stats_screen)
+        self.button2.place(relx=0.35, rely=0.3, relwidth=0.3)
+
         self.save_button = tk.Button(self.root, text="Save", command=self.save_tasks)
         self.save_button.place(relx=0.35, rely=0.4, relwidth=0.3)
+
+    def stats_screen(self):
+        stats.StatusScreen()
 
     def random_task(self):
         randomTask.RandomiserApp(self.page.tasks)
@@ -122,10 +130,35 @@ class Menu:
         name_entry = tk.Entry(self.root)
         name_entry.grid(row=1, column=1, padx=10, pady=5)
 
+        # Load stats from JSON file
+        try:
+            with open('stats.json', 'r') as file:
+                stats_data = json.load(file)
+        except FileNotFoundError:
+            stats_data = []
+
+        # Create a label for the checkbox table
+        table_label = tk.Label(self.root, text="Tick all that apply:")
+        table_label.grid(row=3, column=0, padx=10, pady=5, columnspan=2)
+
+        # Create checkboxes for each stat name
+        check_vars = []
+        if stats_data != []:
+            for i, attribute in enumerate(stats_data["attributes"]):
+                var = tk.BooleanVar()
+                check_vars.append([attribute,var])
+                checkbox = tk.Checkbutton(self.root, text=attribute, variable=var)
+                checkbox.grid(row=4+i, column=0, padx=10, pady=2, columnspan=2)
+
+
         def save_new_task():
             name = name_entry.get()
+            x = []
             if name:
-                new_task = Task(name, 0, False, datetime.now().strftime('%Y-%m-%d'))
+                for i in check_vars:
+                    if i[1].get():
+                        x.append(i[0])
+                new_task = Task(name, 0, False, datetime.now().strftime('%Y-%m-%d'),x)
                 self.page.tasks.append(new_task)
                 self.save_tasks()
                 self.display_tasks()
@@ -140,7 +173,7 @@ class Menu:
 
     # Save tasks to JSON file
     def save_tasks(self):
-        tasks_data = [{'name': task.name, 'streak': task.streak, 'updated': task.updated, 'last_updated': task.last_updated} for task in self.page.tasks]
+        tasks_data = [{'name': task.name, 'streak': task.streak, 'updated': task.updated, 'last_updated': task.last_updated, 'attributes': task.attributes} for task in self.page.tasks]
         with open('pstatus.json', 'w') as file:
             json.dump(tasks_data, file, indent=4)
 
