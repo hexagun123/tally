@@ -3,12 +3,6 @@
 
 > below are the updates
 
-**UPDATED** on 20/3/2025
-Created a simple backup which allows for further expansion without accidentally deleting my own streak.
-It should be store 1 directory away from the folder created
-
-Additionally, created a way to modify the task created and a better UI for the status screen.
-
 _**UPDATED** on 20/3/2025_
 Created a simple backup which allows for further expansion without accidentally deleting my own streak.
 It should be store 1 directory away from the folder created
