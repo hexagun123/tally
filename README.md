@@ -1,5 +1,5 @@
-#This is a simple streak counter aimed to help with self-improvement
-##The program is in very early stages of developement.
+# This is a simple streak counter aimed to help with self-improvement
+## The program is in very early stages of developement.
 
 > below are the updates
 
