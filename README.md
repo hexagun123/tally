@@ -3,6 +3,12 @@
 
 > below are the updates
 
+**UPDATED** on 20/3/2025
+Created a simple backup which allows for further expansion without accidentally deleting my own streak.
+It should be store 1 directory away from the folder created
+
+Additionally, created a way to modify the task created and a better UI for the status screen.
+
 **UPDATED** on 24/2/2025
 The program is very basic right now, and since I'm a student, I also included a grade section
 The main purpose of the streak counter is so that I know my progress, and gets addicted to my habbits, or in other words, this will help me create good, healthy habbits

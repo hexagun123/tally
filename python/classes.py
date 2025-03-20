@@ -3,6 +3,7 @@ import json
 import randomTask
 import stats
 from datetime import datetime
+import os
 
 # Task class to represent each task with its attributes
 class Task:
@@ -62,8 +63,37 @@ class Screen:
     def run(self):
         self.root.mainloop()
 
-# Menu class to handle the main menu and task operations
+"""
+    A class to create and manage the main menu and task-related functionalities in a Tkinter application.
+    Attributes:
+    root : Tk
+        The root window of the Tkinter application.
+    page : Page
+        The page object containing tasks and other related data.
+    Methods:
+    create_main_menu():
+        Creates the main menu with buttons for various functionalities.
+    stats_screen():
+        Opens the stats screen.
+    random_task():
+        Opens the random task screen.
+    streak_check(task):
+        Checks and updates the streak of a given task.
+    modify_task(name):
+        Modifies an existing task and resets its streak.
+    display_tasks():
+        Displays the list of tasks and updates their streaks.
+    enter_new_tasks():
+        Allows the user to enter new tasks.
+    return_to_main():
+        Returns to the main menu.
+    save_tasks():
+        Saves the tasks to a JSON file and creates a backup.
+    clear_widgets():
+        Clears all widgets from the root window.
+"""
 class Menu:
+    
     def __init__(self, root, page):
         self.root = root
         self.page = page
@@ -103,6 +133,58 @@ class Menu:
                 task.streak = 0
             task.last_updated = today
 
+    def modify_task(self,name):
+        self.clear_widgets()
+
+        return_button = tk.Button(self.root, text="Return", command=self.return_to_main)
+        return_button.grid(row=0, column=0, padx=10, pady=10, columnspan=2)
+
+        name_label = tk.Label(self.root, text="Warning: Modifying a task will reset its streak.")
+        name_label.grid(row=1, column=0, padx=10, pady=5)
+        name_label = tk.Label(self.root, text="Task Name:")
+        name_label.grid(row=1, column=1, padx=10, pady=5)
+        name_entry = tk.Entry(self.root)
+        name_entry.insert(0, name)
+        name_entry.grid(row=1, column=2, padx=10, pady=5)
+
+        # Load stats from JSON file
+        try:
+            with open('stats.json', 'r') as file:
+                stats_data = json.load(file)
+        except FileNotFoundError:
+            stats_data = []
+
+        # Create a label for the checkbox table
+        table_label = tk.Label(self.root, text="Tick all that apply:")
+        table_label.grid(row=3, column=0, padx=10, pady=5, columnspan=2)
+
+        # Create checkboxes for each stat name
+        check_vars = []
+        if stats_data != []:
+            for i, attribute in enumerate(stats_data["attributes"]):
+                var = tk.BooleanVar()
+                check_vars.append([attribute,var])
+                checkbox = tk.Checkbutton(self.root, text=attribute, variable=var)
+                checkbox.grid(row=4+i, column=0, padx=10, pady=2, columnspan=2)
+
+
+        def modify_task():
+            name = name_entry.get()
+            x = []
+            if name:
+                for i in check_vars:
+                    if i[1].get():
+                        x.append(i[0])
+                new_task = Task(name, 0, False, datetime.now().strftime('%Y-%m-%d'),x)
+                self.page.tasks = [t for t in self.page.tasks if t.name != name]
+                self.page.tasks.append(new_task)
+                self.save_tasks()
+                self.display_tasks()
+
+
+        enter_button = tk.Button(self.root, text="Enter", command=modify_task)
+        enter_button.grid(row=2, column=0, padx=10, pady=10, columnspan=2)
+
     # Display tasks and update their streaks
     def display_tasks(self):
         self.clear_widgets()
@@ -111,10 +193,17 @@ class Menu:
         self.save_tasks()
 
         return_button = tk.Button(self.root, text="Return", command=self.return_to_main)
-        return_button.grid(row=0, column=0, padx=10, pady=10, columnspan=2)
+        return_button.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
 
         new_task_button = tk.Button(self.root, text="Enter New Tasks", command=self.enter_new_tasks)
-        new_task_button.grid(row=1, column=0, padx=10, pady=10, columnspan=2)
+        new_task_button.grid(row=1, column=0, padx=10, pady=10)
+
+        name_label = tk.Label(self.root, text="Task Name:")
+        name_label.grid(row=1, column=1, padx=10, pady=10)
+        name_entry = tk.Entry(self.root)
+        name_entry.grid(row=1, column=2, padx=10, pady=10)
+        modify_task_button = tk.Button(self.root, text="Modify Task", command=lambda: self.modify_task(name_entry.get().capitalize()))
+        modify_task_button.grid(row=1, column=3, padx=10, pady=10)
 
         self.page.display(self.root)
 
@@ -175,6 +264,12 @@ class Menu:
     def save_tasks(self):
         tasks_data = [{'name': task.name, 'streak': task.streak, 'updated': task.updated, 'last_updated': task.last_updated, 'attributes': task.attributes} for task in self.page.tasks]
         with open('pstatus.json', 'w') as file:
+            json.dump(tasks_data, file, indent=4)
+
+        backup_dir = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'jsonBackUp'))
+        os.makedirs(backup_dir, exist_ok=True)
+        backup_file = os.path.abspath(os.path.join(backup_dir, 'pstatus.json'))
+        with open(backup_file, 'w') as file:
             json.dump(tasks_data, file, indent=4)
 
     # Clear all widgets from the root window

@@ -3,9 +3,11 @@ from tkinter import simpledialog, messagebox
 import json
 import math
 from datetime import datetime
+import os
 
 class StatusScreen:
     def __init__(self):
+        # Initialize the main window
         self.root = tk.Tk()
         self.root.title("Anime Status Screen")
         self.root.geometry("800x600")
@@ -21,6 +23,7 @@ class StatusScreen:
         self.root.mainloop()
     
     def load_stats(self):
+        # Load stats data from file
         try:
             with open(self.stats_file, 'r') as f:
                 return json.load(f)
@@ -28,6 +31,7 @@ class StatusScreen:
             return {"attributes": {}}
     
     def load_tasks(self):
+        # Load tasks data from file
         try:
             with open(self.tasks_file, 'r') as f:
                 return json.load(f)
@@ -35,15 +39,29 @@ class StatusScreen:
             return {"tasks": {}}
     
     def save_stats(self):
+        # Save stats data to file and create a backup
         with open(self.stats_file, 'w') as f:
             json.dump(self.stats_data, f, indent=2)
+        
+        backup_dir = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'jsonBackUp'))
+        os.makedirs(backup_dir, exist_ok=True)
+        backup_file = os.path.abspath(os.path.join(backup_dir, 'status.json'))
+        with open(backup_file, 'w') as file:
+            json.dump(self.stats_data, file, indent=4)
     
     def save_tasks(self):
+        # Save tasks data to file and create a backup
         with open(self.tasks_file, 'w') as f:
             json.dump(self.task_data, f, indent=2)
 
+        backup_dir = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'jsonBackUp'))
+        os.makedirs(backup_dir, exist_ok=True)
+        backup_file = os.path.abspath(os.path.join(backup_dir, 'pstatus.json'))
+        with open(backup_file, 'w') as file:
+            json.dump(self.stats_data, file, indent=4)
+
     def setup_ui(self):
-        # Control Panel
+        # Setup the main UI components
         control_frame = tk.Frame(self.root, bg="#2c2c2c")
         control_frame.pack(fill=tk.X, padx=10, pady=10)
         
@@ -62,7 +80,8 @@ class StatusScreen:
         self.update_status_board()
     
     def add_attribute(self):
-        attribute = simpledialog.askstring("New Attribute", "Enter attribute name:")
+        # Add a new attribute to the stats
+        attribute = simpledialog.askstring("New Attribute", "Enter attribute name:").capitalize()
         if attribute:
             if attribute not in self.stats_data["attributes"]:
                 self.stats_data["attributes"][attribute] = 0
@@ -73,6 +92,7 @@ class StatusScreen:
                 messagebox.showwarning("Exists", "Attribute already exists!")
     
     def delete_attribute(self):
+        # Delete an existing attribute from the stats
         attribute = simpledialog.askstring("Remove Attribute", "Enter attribute name:")
         if attribute and attribute in self.stats_data["attributes"]:
             del self.stats_data["attributes"][attribute]
@@ -83,17 +103,21 @@ class StatusScreen:
             messagebox.showwarning("Error", "Attribute not found!")
     
     def calculate_status(self):
+        # Calculate the status based on task data
+        for attr in self.stats_data["attributes"]:
+            self.stats_data["attributes"][attr] = 0
+
         # Update stats based on task data
         for task in self.task_data:
-            if not task["updated"]:
-                for attr in task["attributes"]:
-                    if attr in self.stats_data["attributes"]:
-                        self.stats_data["attributes"][attr] += task["streak"]
+            for attr in task["attributes"]:
+                self.stats_data["attributes"][attr] += task["streak"]
+
         self.save_stats()
         self.save_tasks()
         self.update_status_board()
     
     def create_status_board(self):
+        # Create the status board visualization
         self.canvas.delete("grid")
         attributes = list(self.stats_data["attributes"].keys())
         num_attr = len(attributes)
@@ -117,6 +141,18 @@ class StatusScreen:
                 tags="grid",
                 width=1
             )
+
+            values = list(self.stats_data["attributes"].values())
+            max_value = max(values) if max(values) > 10 else 10
+
+            # Create a label using canvas
+            self.canvas.create_text(
+                points[0]+5, points[1]+10,
+                text=str(math.ceil(max_value/11)*level),
+                fill="white",
+                font=("Arial", 8),
+                tags="grid"
+            )
         
         # Create attribute labels
         if num_attr > 0:
@@ -134,6 +170,7 @@ class StatusScreen:
                 )
     
     def update_status_board(self):
+        # Update the status board visualization
         self.canvas.delete("status")
         attributes = list(self.stats_data["attributes"].keys())
         values = list(self.stats_data["attributes"].values())
@@ -161,6 +198,8 @@ class StatusScreen:
             points,
             outline="#00ffff",
             fill="#00ff22",
+            stipple="gray50",
+            width=2,
             tags="status"
         )
 
