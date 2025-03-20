@@ -45,20 +45,14 @@ class StatusScreen:
         
         backup_dir = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'jsonBackUp'))
         os.makedirs(backup_dir, exist_ok=True)
-        backup_file = os.path.abspath(os.path.join(backup_dir, 'status.json'))
+        backup_file = os.path.abspath(os.path.join(backup_dir, 'stats.json'))
         with open(backup_file, 'w') as file:
-            json.dump(self.stats_data, file, indent=4)
+            json.dump(self.stats_data, file, indent=2)
     
     def save_tasks(self):
         # Save tasks data to file and create a backup
         with open(self.tasks_file, 'w') as f:
             json.dump(self.task_data, f, indent=2)
-
-        backup_dir = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'jsonBackUp'))
-        os.makedirs(backup_dir, exist_ok=True)
-        backup_file = os.path.abspath(os.path.join(backup_dir, 'pstatus.json'))
-        with open(backup_file, 'w') as file:
-            json.dump(self.stats_data, file, indent=4)
 
     def setup_ui(self):
         # Setup the main UI components

@@ -111,10 +111,10 @@ class Menu:
         self.button1.place(relx=0.35, rely=0.3, relwidth=0.3)
 
         self.button2 = tk.Button(self.root, text="Stats screen", command=self.stats_screen)
-        self.button2.place(relx=0.35, rely=0.3, relwidth=0.3)
+        self.button2.place(relx=0.35, rely=0.4, relwidth=0.3)
 
         self.save_button = tk.Button(self.root, text="Save", command=self.save_tasks)
-        self.save_button.place(relx=0.35, rely=0.4, relwidth=0.3)
+        self.save_button.place(relx=0.35, rely=0.5, relwidth=0.3)
 
     def stats_screen(self):
         stats.StatusScreen()
@@ -266,9 +266,10 @@ class Menu:
         with open('pstatus.json', 'w') as file:
             json.dump(tasks_data, file, indent=4)
 
-        backup_dir = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'jsonBackUp'))
+        # Create a backup of the tasks data
+        backup_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'jsonBackUp')
         os.makedirs(backup_dir, exist_ok=True)
-        backup_file = os.path.abspath(os.path.join(backup_dir, 'pstatus.json'))
+        backup_file = os.path.join(backup_dir, 'pstatus_backup.json')
         with open(backup_file, 'w') as file:
             json.dump(tasks_data, file, indent=4)
 
