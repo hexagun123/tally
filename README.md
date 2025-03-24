@@ -1,7 +1,8 @@
 # This is a simple streak counter aimed to help with self-improvement
 ## The program is in very early stages of developement.
 
->todo list
+> todo list
+
 _**attributes_streak**_
 maybe this makes people more focused, less harsh --> provided by alpha tester: Shasha
 
