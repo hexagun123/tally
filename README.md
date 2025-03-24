@@ -1,6 +1,10 @@
 # This is a simple streak counter aimed to help with self-improvement
 ## The program is in very early stages of developement.
 
+>todo list
+_**attributes_streak**_
+maybe this makes people more focused, less harsh --> provided by alpha tester: Shasha
+
 > below are the updates
 
 _**UPDATED** on 20/3/2025_
