@@ -5,6 +5,7 @@
 
 _**attributes_streak**_
 maybe this makes people more focused, less harsh --> provided by alpha tester: Shasha
+
 _**delete task button**_
 add delete task --> provided by alpha tester: Shasha
 
